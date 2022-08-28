@@ -242,16 +242,18 @@ def iniciar_semana(file, file_2):
     print(materials)
     for line in lines:
         if line[0].isnumeric() == True:
-            progress = line[2]
-            level = line[3]
-            exhaust = line[4]
-            task = line[6]
-            stack = recolection(progress,level,exhaust,task) #[4, Madera]
-            for m in materials:
-                if stack[1] == m[0]:
-                    m[1] = str(int(m[1]) + int(stack[0]))
-            line[5] = "Sí"
-            line[6] = "Ninguna"
+            if line[6] != "Ninguna":
+                progress = line[2]
+                level = line[3]
+                exhaust = line[4]
+                task = line[6]
+                stack = recolection(progress,level,exhaust,task) #[4, Madera]
+                for m in materials:
+                    if stack[1] == m[0]:
+                        m[1] = str(int(m[1]) + int(stack[0]))
+                line[4] = str(int(line[4])+1)
+                line[5] = "Sí"
+                line[6] = "Ninguna"
 
     with open(file, "w", encoding="UTF-8", newline='') as f:
         writer = csv.writer(f)
