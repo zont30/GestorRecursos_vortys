@@ -81,7 +81,7 @@ def add_cuadrilla_row(file, input, top):
             top.lift()
             top.focus()
         else:
-            line = [count, name, 0, 1, 0, 'Sí','Ninguna']
+            line = [count, name, 0, 1, 0, 'Sí','Ninguna','No']
             f = open(file, "a+", newline='', encoding="UTF-8")
             writer = csv.writer(f)
             writer.writerow(line)
@@ -221,6 +221,19 @@ def clear_task(tree,file):
             writer.writerows(lines)
             f.close()
 
+def clear_materials(file):
+    lines = []
+    with open(file, "r", encoding="UTF-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            row[1] = "0"
+            lines.append(row)
+        f.close()
+    with open(file, "w", encoding="UTF-8", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(lines)
+        f.close()
+
 """
 LÓGICA
 """
@@ -254,6 +267,7 @@ def iniciar_semana(file, file_2):
                 line[4] = str(int(line[4])+1)
                 line[5] = "Sí"
                 line[6] = "Ninguna"
+                line[7] = "No"
 
     with open(file, "w", encoding="UTF-8", newline='') as f:
         writer = csv.writer(f)

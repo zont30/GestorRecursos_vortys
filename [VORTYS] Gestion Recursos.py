@@ -63,9 +63,9 @@ distanceP_carreta = 0.5 # Penalización de recursos por cada casilla de distanci
 """INTERFAZ"""
 ventana = tk.Tk()
 ventana.title("GESTIÓN DEL ASENTAMIENTO")
-ventana.config(width=800, height=500)
+ventana.config(width=1000, height=500)
 
-center_win(ventana,800,500)
+center_win(ventana,900,500)
 
 etiqueta_temp_cuadrillas = ttk.Label(text="CUADRILLAS")
 etiqueta_temp_cuadrillas.place(x=20, y=15)
@@ -74,21 +74,22 @@ etiqueta_acciones = ttk.Label(text="========== ACCIONES ==========")
 etiqueta_acciones.place(x=20, y=250)
 
 etiqueta_temp_materiales = ttk.Label(text="MATERIALES")
-etiqueta_temp_materiales.place(x=500, y=15)
+etiqueta_temp_materiales.place(x=600, y=15)
 
 etiqueta_temp_elab = ttk.Label(text="ELABORACIONES")
-etiqueta_temp_elab.place(x=500, y=250)
+etiqueta_temp_elab.place(x=600, y=250)
 
 tv = ttk.Treeview(ventana, heigh=8)
-tv['columns']= ('Cuadrilla', 'Nombre', 'Progreso', 'Nivel', 'DiasTrabajo', 'Disponible', 'Tarea')
+tv['columns']= ('Cuadrilla', 'Nombre', 'Progreso', 'Nivel', 'DiasTrabajo', 'Disponible', 'Tarea', 'Herramientas')
 tv.column('#0', width=0, stretch="NO")
-tv.column('Cuadrilla',anchor="center", width=30)
-tv.column('Nombre',anchor="center", width=80)
-tv.column('Progreso',anchor="center", width=60)
-tv.column('Nivel',anchor="center", width=50)
+tv.column('Cuadrilla',anchor="center", width=25)
+tv.column('Nombre',anchor="center", width=70)
+tv.column('Progreso',anchor="center", width=55)
+tv.column('Nivel',anchor="center", width=40)
 tv.column('DiasTrabajo',anchor="center", width=70)
-tv.column('Disponible',anchor="center", width=70)
+tv.column('Disponible',anchor="center", width=65)
 tv.column('Tarea',anchor="center", width=100)
+tv.column('Herramientas',anchor="center", width=80)
 
 tv.heading('Cuadrilla', text='Nº', anchor="center")
 tv.heading('Nombre', text='Nombre', anchor="center")
@@ -97,6 +98,7 @@ tv.heading('Nivel', text='Nivel', anchor="center")
 tv.heading('DiasTrabajo', text='Días trabajo', anchor="center")
 tv.heading('Disponible', text='Disponible', anchor="center")
 tv.heading('Tarea', text='Tarea', anchor="center")
+tv.heading('Herramientas', text='Herramientas', anchor="center")
 
 for n,row in enumerate(c_list):
     if row[5] == "Sí":
@@ -120,7 +122,7 @@ tv_2.heading('Stacks', text='Stacks', anchor="center")
 for n,row in enumerate(r_list):
     tv_2.insert(parent="",index=n, iid=n, text="", values=row)
 
-tv_2.place(x= 500, y= 50)
+tv_2.place(x= 600, y= 50)
 
 tv_3 = ttk.Treeview(ventana,heigh=8)
 tv_3['columns']= ('Elaboración', 'Stacks')
@@ -134,7 +136,7 @@ tv_3.heading('Stacks', text='Stacks', anchor="center")
 for n,row in enumerate(e_list):
     tv_3.insert(parent="",index=n, iid=n, text="", values=row)
 
-tv_3.place(x= 500, y= 280)
+tv_3.place(x= 600, y= 280)
 
 """
 DATOS
@@ -152,6 +154,9 @@ b_assign_task.place(x=25, y=320)
 
 b_clear_task = ttk.Button(ventana, text="Quitar tarea", command=lambda: [clear_task(tv,cuadrillas_csv),update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
 b_clear_task.place(x=130, y=320)
+
+b_clear_task = ttk.Button(ventana, text="BORRAR", command=lambda: [clear_materials(recursos_csv),update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
+b_clear_task.place(x=750, y=10)
 
 # b_elaborate = ttk.Button(ventana, text="Realizar elaboración")
 # b_elaborate.place(x=25, y=360)
