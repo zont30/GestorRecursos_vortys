@@ -35,7 +35,7 @@ def get_resources(csv):
         r_list.append(temp)
     return r_list
 
-def update_list(tree,csv):
+def update_list(tree,tree_2,tree_3,csv,csv_2,csv_3):
     tree.delete(*tree.get_children())
     c_list, c = get_cuadrillas(csv)
     for n, row in enumerate(c_list):
@@ -45,6 +45,14 @@ def update_list(tree,csv):
             tree.insert(parent="", index=n, iid=n, text="", values=row, tags='unavailable')
     tree.tag_configure('available', background='#8BE28C')
     tree.tag_configure('unavailable', background='#E28D8B')
+    tree_2.delete(*tree_2.get_children())
+    r_list = get_resources(csv_2)
+    for n, row in enumerate(r_list):
+        tree_2.insert(parent="", index=n, iid=n, text="", values=row)
+    tree_3.delete(*tree_3.get_children())
+    e_list = get_resources(csv_3)
+    for n, row in enumerate(e_list):
+        tree_3.insert(parent="", index=n, iid=n, text="", values=row)
 
 def center_win(root,w,h):
     ws = root.winfo_screenwidth()  # width of the screen
@@ -81,7 +89,7 @@ def add_cuadrilla_row(file, input, top):
             top.destroy()
             top.update()
 
-def create_cuadrilla(csv,root,tree):
+def create_cuadrilla(root,tree,tree_2,tree_3,csv,csv_2,csv_3):
     win = Toplevel(root)
     win.title("CUADRILLA")
     win.config(width=200, height=150)
@@ -100,9 +108,9 @@ def create_cuadrilla(csv,root,tree):
     input_name.place(x=10, y=50)
     input_name.focus()
 
-    win.bind('<Return>', lambda event: [add_cuadrilla_row(csv,input_name,win),update_list(tree,csv)])
+    win.bind('<Return>', lambda event: [add_cuadrilla_row(csv,input_name,win),update_list(tree,tree_2,tree_3,csv,csv_2,csv_3)])
 
-    b_ok = ttk.Button(win, text="Aceptar", command= lambda: [add_cuadrilla_row(csv,input_name,win),update_list(tree,csv)])
+    b_ok = ttk.Button(win, text="Aceptar", command= lambda: [add_cuadrilla_row(csv,input_name,win),update_list(tree,tree_2,tree_3,csv,csv_2,csv_3)])
     b_ok.place(x=10, y=100)
 
     b_cancel = ttk.Button(win, text="Cancelar", command= lambda: exit_btn(win))
@@ -138,7 +146,7 @@ def delete_cuadrilla(tree,file):
             writer.writerows(lines)
             f.close()
 
-def assign_task(tree,root,file,file_2):
+def assign_task(root,tree,tree_2,tree_3,file,file_2,file_3):
     cuadrilla = selectItem(tree)
     if cuadrilla == "None":
         messagebox.showerror("Error: Cuadrilla no seleccionada", "No has seleccionado ninguna cuadrilla. Elige una para asignarle una tarea.")
@@ -153,10 +161,10 @@ def assign_task(tree,root,file,file_2):
             tag_name = ttk.Label(win, text="Tareas disponibles")
             tag_name.place(x=50, y=20)
 
-            def add_task(top,task,item,file_2):
+            def add_task(top,task,item,file):
                 cuadrilla = item[1]
                 lines = []
-                with open(file_2, "r", encoding="UTF-8") as f:
+                with open(file, "r", encoding="UTF-8") as f:
                     reader = csv.reader(f)
                     for row in reader:
                         lines.append(row)
@@ -167,18 +175,18 @@ def assign_task(tree,root,file,file_2):
                         line[6] = task
                     else:
                         pass
-                with open(file_2,"w",encoding="UTF-8",newline='') as f:
+                with open(file,"w",encoding="UTF-8",newline='') as f:
                     writer = csv.writer(f)
                     writer.writerows(lines)
                     f.close()
                     top.destroy()
                     top.update()
 
-            list = get_resources(file)
+            list = get_resources(file_2)
             y= 50
             for item in list:
                 name = item[0]
-                b_list = ttk.Button(win, text=name, command=lambda x=name: [add_task(win,x,cuadrilla,file_2), update_list(tree, file_2)])
+                b_list = ttk.Button(win, text=name, command=lambda x=name: [add_task(win,x,cuadrilla,file), update_list(tree, tree_2, tree_3, file, file_2, file_3)])
                 b_list.place(x=50, y=y)
                 y+= 30
 
@@ -219,24 +227,51 @@ LÓGICA
 
 def iniciar_semana(file, file_2):
     lines = []
+    materials = []
+    with open(file_2, "r", encoding="UTF-8") as f:
+        reader_2 = csv.reader(f)
+        for row in reader_2:
+            materials.append(row)
+        f.close()
     with open(file, "r", encoding="UTF-8") as f:
         reader = csv.reader(f)
         for row in reader:
             lines.append(row)
         f.close()
+    print(lines)
+    print(materials)
     for line in lines:
         if line[0].isnumeric() == True:
             progress = line[2]
             level = line[3]
             exhaust = line[4]
             task = line[6]
+            stack = recolection(progress,level,exhaust,task) #[4, Madera]
+            for m in materials:
+                if stack[1] == m[0]:
+                    m[1] = str(int(m[1]) + int(stack[0]))
+            line[5] = "Sí"
+            line[6] = "Ninguna"
 
-    # with open(file, "w", encoding="UTF-8", newline='') as f:
-    #     writer = csv.writer(f)
-    #     writer.writerows(lines)
-    #     f.close()
+    with open(file, "w", encoding="UTF-8", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(lines)
+        f.close()
+    with open(file_2, "w", encoding="UTF-8", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(materials)
+        f.close()
 
 def recolection(progress, level, exhaust, task):
     carga_max = 4  # Carga máxima por cuadrilla
+    if level == "1":
+        stack = [str(carga_max),task]
+    if level == "2":
+        stack = [str(carga_max*2), task]
+    if level == "3":
+        stack = [str(carga_max*3), task]
+    return stack
+
+
 
 

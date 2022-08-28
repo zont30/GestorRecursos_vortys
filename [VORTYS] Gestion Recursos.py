@@ -136,17 +136,21 @@ for n,row in enumerate(e_list):
 
 tv_3.place(x= 500, y= 280)
 
+"""
+DATOS
+"""
+data = [ventana, tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv]
 
-b_create_cuadrilla = ttk.Button(ventana, text="Crear cuadrilla", command=lambda: create_cuadrilla(cuadrillas_csv,ventana,tv))
+b_create_cuadrilla = ttk.Button(ventana, text="Crear cuadrilla", command=lambda: create_cuadrilla(ventana, tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv))
 b_create_cuadrilla.place(x=25, y=280)
 
-b_delete_cuadrilla = ttk.Button(ventana, text="Eliminar cuadrilla", command=lambda: [delete_cuadrilla(tv,cuadrillas_csv),update_list(tv,cuadrillas_csv)])
+b_delete_cuadrilla = ttk.Button(ventana, text="Eliminar cuadrilla", command=lambda: [delete_cuadrilla(tv,cuadrillas_csv),update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
 b_delete_cuadrilla.place(x=130, y=280)
 
-b_assign_task = ttk.Button(ventana, text="Asignar tarea", command=lambda: assign_task(tv,ventana,recursos_csv,cuadrillas_csv))
+b_assign_task = ttk.Button(ventana, text="Asignar tarea", command=lambda: assign_task(ventana, tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv))
 b_assign_task.place(x=25, y=320)
 
-b_clear_task = ttk.Button(ventana, text="Quitar tarea", command=lambda: [clear_task(tv,cuadrillas_csv),update_list(tv,cuadrillas_csv)])
+b_clear_task = ttk.Button(ventana, text="Quitar tarea", command=lambda: [clear_task(tv,cuadrillas_csv),update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
 b_clear_task.place(x=130, y=320)
 
 # b_elaborate = ttk.Button(ventana, text="Realizar elaboración")
@@ -162,7 +166,7 @@ b_clear_task.place(x=130, y=320)
 # input_addUnhappy = tk.Entry(ventana)
 # input_addUnhappy.place(x=260, y=320, width=20)
 
-b_start_week = ttk.Button(ventana, text="INICIAR SEMANA", command=lambda: iniciar_semana(cuadrillas_csv,recursos_csv))
+b_start_week = ttk.Button(ventana, text="INICIAR SEMANA", command=lambda: [iniciar_semana(cuadrillas_csv,recursos_csv), update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
 b_start_week.place(x=25, y=420)
 
 
