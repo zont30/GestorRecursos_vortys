@@ -154,12 +154,14 @@ def assign_task(root,tree,tree_2,tree_3,file,file_2,file_3):
         if cuadrilla[6] == "Ninguna":
             win = Toplevel(root)
             win.title("TAREAS")
-            win.config(width=200, height=200)
 
-            center_win(win, 200, 250)
+            center_win(win, 350, 300)
 
-            tag_name = ttk.Label(win, text="Tareas disponibles")
+            tag_name = ttk.Label(win, text="Recolección")
             tag_name.place(x=50, y=20)
+
+            tag_name_2 = ttk.Label(win, text="Elaboración")
+            tag_name_2.place(x=200, y=20)
 
             def add_task(top,task,item,file):
                 cuadrilla = item[1]
@@ -183,12 +185,20 @@ def assign_task(root,tree,tree_2,tree_3,file,file_2,file_3):
                     top.update()
 
             list = get_resources(file_2)
-            y= 50
+            list_2 = get_resources(file_3)
+            y = 50
+            y_2 = 50
             for item in list:
                 name = item[0]
                 b_list = ttk.Button(win, text=name, command=lambda x=name: [add_task(win,x,cuadrilla,file), update_list(tree, tree_2, tree_3, file, file_2, file_3)])
                 b_list.place(x=50, y=y)
                 y+= 30
+            for item in list_2:
+                name = item[0]
+                c_list = ttk.Button(win, text=name, command=lambda x=name: [add_task(win,x,cuadrilla,file), update_list(tree, tree_2, tree_3, file, file_2, file_3)])
+                c_list.place(x=200, y=y_2)
+                y_2+= 30
+
 
             win.update()
 
@@ -251,8 +261,6 @@ def iniciar_semana(file, file_2):
         for row in reader:
             lines.append(row)
         f.close()
-    print(lines)
-    print(materials)
     for line in lines:
         if line[0].isnumeric() == True:
             if line[6] != "Ninguna":
