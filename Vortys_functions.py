@@ -248,9 +248,10 @@ def clear_materials(file):
 LÓGICA
 """
 
-def iniciar_semana(file, file_2):
+def iniciar_semana(file, file_2,file_stats,week_tag):
     lines = []
     materials = []
+    stats = []
     with open(file_2, "r", encoding="UTF-8") as f:
         reader_2 = csv.reader(f)
         for row in reader_2:
@@ -277,6 +278,17 @@ def iniciar_semana(file, file_2):
                 line[6] = "Ninguna"
                 line[7] = "No"
 
+    with open(file_stats, "r", encoding="UTF-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row[0] == "Semana":
+                week = int(row[1])
+                row[1] = str(week+1)
+                week = row[1]
+                stats.append(row)
+            else:
+                stats.append(row)
+
     with open(file, "w", encoding="UTF-8", newline='') as f:
         writer = csv.writer(f)
         writer.writerows(lines)
@@ -285,6 +297,12 @@ def iniciar_semana(file, file_2):
         writer = csv.writer(f)
         writer.writerows(materials)
         f.close()
+
+    with open(file_stats, "w", encoding="UTF-8", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(stats)
+        f.close()
+    week_tag['text'] = f" | SEMANA: {week} |"
 
 def recolection(progress, level, exhaust, task):
     carga_max = 4  # Carga máxima por cuadrilla

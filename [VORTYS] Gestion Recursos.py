@@ -10,6 +10,7 @@ CSVs
 cuadrillas_csv = r"files\cuadrillas.csv"
 recursos_csv = r"files\recursos.csv"
 elaboraciones_csv = r"files\elaboraciones.csv"
+estadisticas_csv = r"files\stats.csv"
 
 semana = 0
 
@@ -18,6 +19,10 @@ semana = 0
 c_list, c = get_cuadrillas(cuadrillas_csv)
 r_list = get_resources(recursos_csv)
 e_list = get_resources(elaboraciones_csv)
+s_list = get_resources(estadisticas_csv)
+for i in s_list:
+    if i[0] == "Semana":
+        semana = i[1]
 
 # Total de cuadrillas
 total_c = len(c)
@@ -72,6 +77,9 @@ etiqueta_temp_cuadrillas.place(x=20, y=15)
 
 etiqueta_acciones = ttk.Label(text="========== ACCIONES ==========")
 etiqueta_acciones.place(x=20, y=250)
+
+etiqueta_semana = ttk.Label(text=f" | SEMANA: {semana} |")
+etiqueta_semana.place(x=350, y=250)
 
 etiqueta_temp_materiales = ttk.Label(text="MATERIALES")
 etiqueta_temp_materiales.place(x=600, y=15)
@@ -171,7 +179,7 @@ b_clear_task.place(x=750, y=10)
 # input_addUnhappy = tk.Entry(ventana)
 # input_addUnhappy.place(x=260, y=320, width=20)
 
-b_start_week = ttk.Button(ventana, text="INICIAR SEMANA", command=lambda: [iniciar_semana(cuadrillas_csv,recursos_csv), update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
+b_start_week = ttk.Button(ventana, text="INICIAR SEMANA", command=lambda: [iniciar_semana(cuadrillas_csv,recursos_csv,estadisticas_csv,etiqueta_semana), update_list(tv, tv_2, tv_3, cuadrillas_csv, recursos_csv, elaboraciones_csv)])
 b_start_week.place(x=25, y=420)
 
 
