@@ -7,9 +7,9 @@ from Vortys_functions import *
 """
 CSVs
 """
-cuadrillas_csv = r"C:\Users\anton\Desktop\Dropbox\ROL\Easy fantasy\GESTIÓN RECURSOS PYTHON\cuadrillas.csv"
-recursos_csv = r"C:\Users\anton\Desktop\Dropbox\ROL\Easy fantasy\GESTIÓN RECURSOS PYTHON\recursos.csv"
-elaboraciones_csv = r"C:\Users\anton\Desktop\Dropbox\ROL\Easy fantasy\GESTIÓN RECURSOS PYTHON\elaboraciones.csv"
+cuadrillas_csv = r"files\cuadrillas.csv"
+recursos_csv = r"files\recursos.csv"
+elaboraciones_csv = r"files\elaboraciones.csv"
 
 semana = 0
 
